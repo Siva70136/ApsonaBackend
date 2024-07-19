@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/',auth, async (req, res) => {
     const { title, content, tags, color, dueDate } = req.body;
-    console.log(req.user.id);
+    //console.log(req.user.id);
     try {
         const newNote = new Note({
             user: req.user.id,
@@ -63,6 +63,7 @@ router.put('/:id', auth, async (req, res) => {
 
 router.delete('/:id', auth, async (req, res) => {
     try {
+        //console.group(req.params.id);
         const note = await Note.findById(req.params.id);
 
         if (!note) {
@@ -72,8 +73,9 @@ router.delete('/:id', auth, async (req, res) => {
         if (note.user.toString() !== req.user.id) {
             return res.status(401).json({ msg: 'User not authorized' });
         }
+        //console.log(note);
+        await Note.findByIdAndDelete(req.params.id);
 
-        await Note.findByIdAndRemove(req.params.id);
 
         res.json({ msg: 'Note removed' });
     } catch (err) {
