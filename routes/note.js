@@ -28,7 +28,7 @@ router.post('/',auth, async (req, res) => {
 
 router.get('/', auth, async (req, res) => {
     try {
-        const notes = await Note.find({ user: req.user.id, trash: false }).sort({ createdAt: -1 });
+        const notes = await Note.find({ user: req.user.id,archived: false, trash: false }).sort({ createdAt: -1 });
         res.json(notes);
     } catch (err) {
         console.error(err.message);
